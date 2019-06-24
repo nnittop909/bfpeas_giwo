@@ -5,6 +5,10 @@
 	<% if employee.logged_in?(Time.now) %>
   	<%= "Please wait for 30 seconds to log-out." %>
   <% else %>
-  	<%= "Please wait for 30 seconds to log-in." %>
+  	<% if employee.can_pm_login?(Time.now) %>
+  		<%= "Please wait for #{@employee.minutes_to_log_out(Time.now)} to log-in." %>
+  	<% else %>
+  		<%= "Please wait for 30 seconds to log-in." %>
+  	<% end %>
   <% end %>
 </h4>

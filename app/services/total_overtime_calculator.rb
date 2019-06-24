@@ -19,7 +19,7 @@ class TotalOvertimeCalculator
 	end
 
 	def get_hours
-		(calculate_total.to_f / 60).to_s.split(".").first.to_i
+		(calculate_total / 60).to_i
 	end
 
 	def get_minutes

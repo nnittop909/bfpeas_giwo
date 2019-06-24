@@ -32,7 +32,7 @@ class UndertimeCalculator
   end
 
 	def get_hours
-    (total_under_time.to_f / 60).to_s.split(".").first.to_i
+    (total_under_time / 60).to_i
 	end
 
 	def get_minutes

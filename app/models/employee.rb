@@ -154,18 +154,21 @@ class Employee < ApplicationRecord
     dtr_pm_in(date).blank? && dtr_pm_out(date).blank?
   end
 
-  def can_log_out? # can logout after 3 minutes
-    ((Time.now - recent_logged_at) / 1.minutes) >= 2
-    # recent_logged_at >= 2.minutes
+  def can_pm_login?(time) # 5 minutes interval
+    if ((Time.now - recent_logged_at(time)) / 1.minutes) >= 5
+      true
+    else
+      if time.between?((business_pm_starts_at(time) - 5.minutes), business_pm_starts_at(time))
+        true
+      else
+        false
+      end
+    end
   end
 
-  def cannot_log_out?
-    !(Time.now - (recent_logged_at + 3.seconds)).negative?
-  end
-
-  def minutes_to_log_out(time)
-    duration = 2 - ((time - recent_logged_at) / 1.minutes).to_i
-    unit = duration < 2 ? "minute" : "minutes"
+  def minutes_to_login(time)
+    duration = 5 - ((Time.now - recent_logged_at(time)) / 1.minutes).to_i
+    unit = duration < 5 ? "minute" : "minutes"
     "#{duration} #{unit}"
   end
 

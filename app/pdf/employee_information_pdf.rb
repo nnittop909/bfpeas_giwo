@@ -11,7 +11,7 @@ class EmployeeInformationPdf < Prawn::Document
   def header
   	bounding_box [0, 786], width: 161 do
       # stroke_bounds
-      # image "#{Rails.root}/app/assets/images/ia_logo.jpg", width: 40, height: 40
+      image "#{Rails.root}/app/assets/images/ia_logo.png", width: 70, height: 70, position: :right
     end
     bounding_box [161, 786], width: 240 do
       # stroke_bounds
@@ -33,7 +33,7 @@ class EmployeeInformationPdf < Prawn::Document
     end
     bounding_box [401, 786], width: 161 do
       # stroke_bounds
-      # image "#{Rails.root}/app/assets/images/church_logo.jpg", width: 40, height: 40
+      # image "#{Rails.root}/app/assets/images/church_logo.jpg", width: 70, height: 70
     end
     move_down 10
     text "EMPLOYEE BASIC INFORMATION SHEET", style: :bold, size: 17, align: :center

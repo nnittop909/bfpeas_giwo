@@ -12,11 +12,11 @@ class OvertimeCalculator
 	end
 
 	def get_hours
-		(total_over_time.to_f / 60).to_s.split(".").first.to_i
+		(total_over_time / 60).to_i
 	end
 
 	def get_minutes
-		(total_over_time - (get_hours*60)).to_i
+		(total_over_time - (get_hours*60))
 	end
 
 	def pm_ends_at

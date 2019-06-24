@@ -3,6 +3,7 @@ class TotalWorkedCalculator
 	def initialize(date, employee)
 		@date = date
 		@employee = employee
+		@total_minutes = @employee.business_hour.total_minutes
 	end
 
 	def calculate_total
@@ -18,24 +19,29 @@ class TotalWorkedCalculator
     total
 	end
 
+	def days
+		(calculate_total / @total_minutes)
+	end
+
+	def hours
+		mins = calculate_total - (days.to_i*@total_minutes)
+		(mins / 60)
+	end
+
+	def minutes
+		mins = calculate_total - (days.to_i*@total_minutes) - (hours.to_i*60)
+	end
+
 	def get_days
-		((calculate_total.to_f / 60) / 24).to_s.split(".").first.to_i
+		days.to_i
 	end
 
 	def get_hours
-		if get_days.zero?
-			(calculate_total.to_f / 60).to_s.split(".").first.to_i
-		else
-			((calculate_total.to_f - (get_days*24*60)) / 60).to_s.split(".").first.to_i
-		end
+		hours.to_i
 	end
 
 	def get_minutes
-		if get_hours.zero?
-			(calculate_total.to_f / 60).to_s.split(".").first.to_i
-		else
-			(calculate_total.to_f - ((get_days*24*60) + (get_hours*60))).to_i
-		end
+		minutes.to_i
 	end
 
 	def worked_in_words

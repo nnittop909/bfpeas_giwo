@@ -56,7 +56,7 @@ class RegularWorkCalculator
 	end
 
 	def get_hours
-		(worked_total.to_f / 60).to_s.split(".").first.to_i
+		(worked_total / 60).to_i
 	end
 
 	def get_minutes

@@ -21,15 +21,11 @@ class TotalUndertimeCalculator
 	end
 
 	def get_days
-		((calculate_total.to_f / 60) / 24).to_s.split(".").first.to_i
+		((calculate_total / 60) / 24).to_i
 	end
 
 	def get_hours
-		if get_days.zero?
-			(calculate_total.to_f / 60).to_s.split(".").first.to_i
-		else
-			((calculate_total.to_f - (get_days*24*60)) / 60).to_s.split(".").first.to_i
-		end
+		(calculate_total / 60).to_i
 	end
 
 	def get_minutes
