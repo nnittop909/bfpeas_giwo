@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RFID Attendance Management Module</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body class="hold-transition">
+    <div id="modal-holder"></div>
+    <header>
+      <%= render 'layouts/shared/navbar' %>
+    </header>
+    <main role="main" class="container-fluid">
+      <%= render 'layouts/shared/flash_messages' %>
+      <%= yield %>
+    </main>
+    <%#= render 'layouts/shared/footer' %>
+  </body>
+</html>

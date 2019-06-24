@@ -1,0 +1,42 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title card-title" id="mainModalLabel">
+        Configure Overtime
+      </h4>
+      <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    </div>
+    <hr class="no-margin">
+    <%= simple_form_for @overtime_config, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: settings_overtime_config_path do |f| %>
+      <div class="modal-body">
+        <%= f.input :minimum_overtime, label: 'Minimum Overtime', hint: "Enter number of hours" %>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="bootstrap-timepicker timepicker">
+              <%= f.input :starts_at, label: "Starts at", input_html: {id: "startTime", value: @overtime_config.starts_at.strftime('%I:%M %p')}, as: :string %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="bootstrap-timepicker timepicker">
+              <%= f.input :ends_at, label: "Ends at", input_html: {id: "endTime", value: @overtime_config.ends_at.strftime('%I:%M %p')}, as: :string %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <%= f.submit "Save", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.modal').on('shown.bs.modal', function () {
+    $('#startTime').timepicker({
+      defaultTime: false
+    });
+    $('#endTime').timepicker({
+      defaultTime: false
+    });
+  });
+</script>

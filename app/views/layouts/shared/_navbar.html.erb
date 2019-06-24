@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-md navbar-fixed-top navbar-dark mb-3" style="background-color: #021b35;">
+  <a class="navbar-brand" href="#">RFID Attendance Management Module</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+      </li>
+    </ul>
+    
+    <ul class="navbar-nav ml-auto">
+      <!-- <li class="nav-item"> -->
+        <%#= link_to "Time Records", employees_path, class: 'nav-link' %>
+      <!-- </li> -->
+      <li class="nav-item">
+        <%= link_to "Employees", employees_path, class: 'nav-link' %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Reports", reports_path, class: 'nav-link' %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Settings", settings_path, class: 'nav-link' %>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <% if current_employee.avatar.attached? %>
+            <%= image_tag(current_employee.avatar, height: 30, width: 30, class: "img-circle") %>
+          <% else %>
+            <%= image_tag('default.png', height: 30, width: 30, class: "img-circle") %>
+          <% end %>
+          <%= current_employee.first_name %>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <%= link_to "Account Settings", employee_account_settings_path(current_employee), class: 'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <%= link_to "Monitor Mode", monitoring_index_path, class: 'dropdown-item' %>
+          <div class="dropdown-divider"></div>
+          <%=link_to destroy_employee_session_path, method: :delete, class: "dropdown-item" do %>
+            <span class=""><i class="fa fa-sign-out-alt"></i> Sign Out</span>
+          <% end %>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

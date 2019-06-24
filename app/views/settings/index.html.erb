@@ -1,0 +1,252 @@
+<div class="row">
+	<div class="col-md-10 offset-md-1">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Settings</h4>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-8">
+						<h4 class="card-title mb-2">Display Duration</h4>
+						<div class="row justify-content-end">
+							<div class="col-md-11">
+								<h6><%=@config.display_duration %> Seconds</h6>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<%= link_to "Update", edit_settings_configuration_path(@config), class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %>
+					</div>
+				</div>
+			</div>
+			<hr class="no-margin">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-8">
+						<h4 class="card-title mb-2">DTR Signatory</h4>
+						<div class="row justify-content-end">
+							<div class="col-md-11">
+								<h6><%=@config.dtr_signatory || "N/A" %></h6>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<%= link_to "Update", edit_settings_signatory_path(@config), class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %>
+					</div>
+				</div>
+			</div>
+			<hr class="no-margin">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-8">
+						<h4 class="card-title">Departments</h4>
+						<br>
+						<div class="row justify-content-end">
+							<div class="col-md-11">
+								<div class="row justify-content-end">
+									<div class="col-md-11">
+										<table class="table">
+											<% @departments.each do |department| %>
+												<tr>
+													<td><%= department.name %> (<%= department.code %>)</td>
+													<td><%= link_to "Update", edit_settings_department_path(department), class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %></td>
+												</tr>
+											<% end %>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<%= link_to "New Department", new_settings_department_path, class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %>
+					</div>
+				</div>
+			</div>
+			<hr class="no-margin">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-8">
+						<h4 class="card-title">Business Hours</h4>
+						<br>
+						<div class="row justify-content-end">
+							<div class="col-md-11">
+								<h6>Faculty Members:</h6>
+								<div class="row justify-content-end">
+									<div class="col-md-11">
+										<table class="table">
+											<tr>
+												<th>AM</th>
+												<th>PM</th>
+												<th></th>
+											</tr>
+											<% @business_hours.faculty_member.each do |business_hour| %>
+												<tr>
+													<td><%= "#{business_hour.am_starts_at.strftime('%I:%M %p')} - #{business_hour.am_ends_at.strftime('%I:%M %p')}" %></td>
+													<td><%= "#{business_hour.pm_starts_at.strftime('%I:%M %p')} - #{business_hour.pm_ends_at.strftime('%I:%M %p')}" %></td>
+													<td><%= link_to "Update", edit_settings_business_hour_path(business_hour), class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %></td>
+												</tr>
+											<% end %>
+										</table>
+									</div>
+								</div>
+								<h6>Staff:</h6>
+								<div class="row justify-content-end">
+									<div class="col-md-11">
+										<table class="table">
+											<tr>
+												<th>AM</th>
+												<th>PM</th>
+												<th></th>
+											</tr>
+											<% @business_hours.staff.each do |business_hour| %>
+												<tr>
+													<td><%= "#{business_hour.am_starts_at.strftime('%I:%M %p')} - #{business_hour.am_ends_at.strftime('%I:%M %p')}" %></td>
+													<td><%= "#{business_hour.pm_starts_at.strftime('%I:%M %p')} - #{business_hour.pm_ends_at.strftime('%I:%M %p')}" %></td>
+													<td><%= link_to "Update", edit_settings_business_hour_path(business_hour), class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %></td>
+												</tr>
+											<% end %>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<%= link_to "New Business Hour", new_settings_business_hour_path, class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} if @business_hours.staff.blank? || @business_hours.faculty_member.blank? %>
+					</div>
+				</div>
+			</div>
+			<hr class="no-margin">
+			<% if Employee.security_personel.present? %>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-8">
+							<h4 class="card-title">Security Personel</h4>
+							<br>
+							<div class="row justify-content-end">
+								<div class="col-md-11">
+									<h6>Day Shift:</h6>
+									<div class="row justify-content-end">
+										<div class="col-md-11">
+											<table class="table">
+												<% @schedules.day_shift.each do |schedule| %>
+													<tr>
+														<td><%= "#{schedule.starts_at.strftime('%I:%M %p')} - #{schedule.ends_at.strftime('%I:%M %p')}" %></td>
+														<td><%= link_to "Update", edit_settings_schedule_path(schedule), class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %></td>
+													</tr>
+												<% end %>
+											</table>
+										</div>
+									</div>
+									<h6>Night Shift:</h6>
+									<div class="row justify-content-end">
+										<div class="col-md-11">
+											<table class="table">
+												<% @schedules.night_shift.each do |schedule| %>
+													<tr>
+														<td><%= "#{schedule.starts_at.strftime('%I:%M %p')} - #{schedule.ends_at.strftime('%I:%M %p')}" %></td>
+														<td><%= link_to "Update", edit_settings_schedule_path(schedule), class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %></td>
+													</tr>
+												<% end %>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<%= link_to "New Schedule", new_settings_schedule_path, class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} if @schedules.night_shift.blank? || @schedules.day_shift.blank? %>
+						</div>
+					</div>
+				</div>
+				<hr class="no-margin">
+			<% end %>
+			<!-- <div class="card-body">
+				<div class="row">
+					<div class="col-md-8">
+						<h4 class="card-title">Overtime Configuration</h4>
+						<br>
+						<div class="row justify-content-end">
+							<div class="col-md-11">
+								<table class="table">
+									<tr>
+										<th>Minimum(Hours)</th>
+										<th>Time</th>
+										<th>Applies To</th>
+										<th></th>
+									</tr>
+									<%# @overtime_configs.each do |overtime_config| %>
+										<tr>
+											<td><%#= overtime_config.minimum_overtime %></td>
+											<td><%#= "#{overtime_config.starts_at.strftime('%I:%M %p')} - #{overtime_config.ends_at.strftime('%I:%M %p')}" %></td>
+											<td><#%= overtime_config.applies_to.titleize %></td>
+											<td><#%= link_to "Update", edit_settings_overtime_config_path(overtime_config), class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %></td>
+										</tr>
+									<%# end %>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<%#= link_to "New Overtime Configuration", new_settings_overtime_config_path, class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %>
+					</div>
+				</div>
+			</div>
+			<hr class="no-margin"> -->
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-8">
+						<h4 class="card-title">Holidays <%= Time.now.year %></h4>
+						<br>
+						<div class="row justify-content-end">
+							<div class="col-md-11">
+								<h6>Regular Holidays:</h6>
+								<div class="row justify-content-end">
+									<div class="col-md-11">
+										<table class="table">
+											<tr>
+												<th class="td-min-padding">Date</th>
+												<th class="td-min-padding">Name</th>
+												<th class="td-min-padding"></th>
+											</tr>
+											<% @holidays.regular.each do |holiday| %>
+												<tr>
+													<td class="td-min-padding"><%= holiday.dated_at.strftime("%B %e, %Y") %></td>
+													<td class="td-min-padding"><%= holiday.name %></td>
+													<td class="td-min-padding"><%= link_to "Update", edit_settings_holiday_path(holiday), class: "btn btn-outline-danger btn-xs float-right", data:{modal: true} %></td>
+												</tr>
+											<% end %>
+										</table>
+									</div>
+								</div>
+								<h6>Special (Non-Working) Holidays:</h6>
+								<div class="row justify-content-end">
+									<div class="col-md-11">
+										<table class="table">
+											<tr>
+												<th class="td-min-padding">Date</th>
+												<th class="td-min-padding">Name</th>
+												<th class="td-min-padding"></th>
+											</tr>
+											<% @holidays.special.each do |holiday| %>
+												<tr>
+													<td class="td-min-padding"><%= holiday.dated_at.strftime("%B %e, %Y") %></td>
+													<td class="td-min-padding"><%= holiday.name %></td>
+													<td class="td-min-padding"><%= link_to "Update", edit_settings_holiday_path(holiday), class: "btn btn-outline-danger btn-xs float-right", data:{modal: true} %></td>
+												</tr>
+											<% end %>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<%= link_to "New Holiday", new_settings_holiday_path, class: "btn btn-outline-danger btn-sm float-right", data:{modal: true} %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

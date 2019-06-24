@@ -1,0 +1,62 @@
+<%= simple_form_for @employee, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: employees_path do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <%= f.input :school_id, input_html: { value: current_school.id }, as: :hidden %>
+    <%= f.input :role, label: false, collection: Employee.whitelisted_roles.map{|r| [r.titleize, r]}, as: :radio_buttons, checked: Employee.whitelisted_roles.first %>
+    <%= f.input :first_name %>
+    <%= f.input :middle_name %>
+    <%= f.input :last_name %>
+    <%= f.input :birthdate, as: :string, input_html: {class: "datepicker"} %>
+    <%= f.input :marital_status, collection: Employee.marital_statuses.keys.to_a.map{|m| [m.titleize, m]}, as: :radio_buttons, checked: Employee.marital_statuses.first %>
+    <div class="spouse-name married" style="display: none;">
+      <%= f.input :spouse_name %>
+    </div>
+    <%= f.input :designation %>
+    <%= f.input :alternate_email, label: "Email" %>
+    <%= f.input :mobile_number, label: "Phone Number" %>
+  </div>
+  <hr class="no-margin">
+  <div class="modal-body">
+    <h6 class="text-muted">Address Details</h6>
+    <%= f.input :sitio %>
+    <%= f.input :barangay %>
+    <%= f.input :municipality %>
+    <%= f.input :province %>
+  </div>
+  <hr class="no-margin">
+  <div class="modal-body">
+    <h6 class="text-muted">ID Card Details</h6>
+    <%= f.input :id_number, label: "ID Number" %>
+    <%= f.input :rfid_uid, label: "RFID UID", hint: 'Scan ID Card' %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Save", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#employee_processor_department_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.datepicker').datepicker({
+      format: 'MM dd, yyyy',
+      orientation: "auto",
+      todayHighlight: 'true',
+      autoclose: 'true'
+    });
+  });
+</script>
+<script type="text/javascript">
+  $('input[type="radio"]').on('change', function() {
+    var inputValue = $(this).attr("value");
+    var targetDiv = $("." + inputValue);
+    $(".spouse-name").not(targetDiv).hide();
+    $(targetDiv).show();
+  });
+</script>

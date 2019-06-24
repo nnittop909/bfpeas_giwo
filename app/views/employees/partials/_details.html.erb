@@ -1,0 +1,87 @@
+
+<div class="col-md-9">
+  <div class="card">
+    <div class="card-header">
+      <%= link_to "Print Info (PDF)", reports_employee_informations_path(format: "pdf", employee_id: @employee.id), class: "btn btn-default float-right" %>
+    </div>
+    <div class="card-body">
+      <h4>Employee Details</h4>
+      <div class="row justify-content-end">
+        <div class="col-md-11">
+          <table class="table table-striped">
+            <tr>
+              <td style="width:140px">Full Name: </td>
+              <td colspan="3" class="text-bold"><b><%=@employee.reversed_fullname %></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">Address: </td>
+              <td colspan="3" class="text-bold"><b><%=@employee.current_address.try(:full_details) || "N/A"%></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">Phone Number: </td>
+              <td colspan="3" class="text-bold"><b><%=@employee.current_contact.try(:number) || "N/A"%></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">Birth Date: </td>
+              <td class="text-bold"><b><%=@employee.try(:birthdate).try(:strftime, "%B %e, %Y") || "N/A" %></b></td>
+              <td style="width:140px">Age: </td>
+              <td class="text-bold"><b><%=@employee.age %></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">Marital Status: </td>
+              <td colspan="3" class="text-bold"><b><%=@employee.marital_status.titleize %></b></td>
+            </tr>
+            <% if @employee.married? %>
+              <tr>
+                <td style="width:140px">Spouse Name: </td>
+                <td colspan="3" class="text-bold"><b><%=@employee.spouse_name %></b></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td style="width:140px">Email Address:</td>
+              <td colspan="3" class="text-bold"><b><%=@employee.email %></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">PRC License #: </td>
+              <td class="text-bold"><b><%=@employee.prc_license_number %></b></td>
+              <td style="width:140px">SSS #: </td>
+              <td class="text-bold"><b><%=@employee.sss_number %></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">PAGIBIG #: </td>
+              <td class="text-bold"><b><%=@employee.pagibig_number %></b></td>
+              <td style="width:140px">Phil Health #: </td>
+              <td class="text-bold"><b><%=@employee.phil_health_number %></b></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <hr class="no-margin">
+    <div class="card-body">
+      <h4>Emergency Contact Details</h4>
+      <div class="row justify-content-end">
+        <div class="col-md-11">
+          <table class="table table-striped">
+            <tr>
+              <td style="width:140px">Full Name: </td>
+              <td colspan="3" class="text-bold"><b><%=@employee.emergency_contact.try(:full_name) || "N/A" %></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">Relationship: </td>
+              <td colspan="3" class="text-bold"><b><%=@employee.emergency_contact.try(:relationship) || "N/A" %></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">Address: </td>
+              <td colspan="3" class="text-bold"><b><%=@employee.emergency_contact.try(:current_address).try(:full_details) || "N/A" %></b></td>
+            </tr>
+            <tr>
+              <td style="width:140px">Phone Number: </td>
+              <td colspan="3" class="text-bold"><b><%=@employee.emergency_contact.try(:current_contact).try(:number) || "N/A" %></b></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

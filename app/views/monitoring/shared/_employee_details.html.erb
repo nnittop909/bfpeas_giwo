@@ -1,0 +1,18 @@
+<table class="borderless">
+  <tr>
+    <td style="width:180px"><h3>ID Number:</h3></td>
+    <td><h3><b><%= employee.try(:id_number) || "N/A" %></b></h3></td>
+  </tr>
+  <tr>
+    <td style="width:180px"><h3>Name:</h3></td>
+    <td><h3><b><%= employee.full_name || "N/A" %></b></h3></td>
+  </tr>
+  <tr>
+    <td style="width:180px"><h3>Designation:</h3></td>
+    <td><h3><b><%= employee.designation || "N/A" %></b></h3></td>
+  </tr>
+  <tr>
+    <td style="width:180px"><h3>Address:</h3></td>
+    <td><h3><b><%= employee.current_address.try(:full_details) || "N/A" %></b></h3></td>
+  </tr>
+</table>

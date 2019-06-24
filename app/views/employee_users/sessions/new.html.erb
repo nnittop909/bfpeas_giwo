@@ -1,0 +1,34 @@
+
+<br>
+<br>
+<div class="row">
+  <div class="col-md-10 offset-md-1">
+    <div class="row">
+      <div class="col-md-8">
+        <h1><center>RFID Attendance Management Module</center></h1>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h4><center>Employee Account Sign in</center></h4>
+            <br>
+            <%= simple_form_for(resource, as: resource_name, :url => session_path(resource_name),
+                   wrapper_mappings: {boolean: :vertical_boolean }, html: {autocomplete: "off"}) do |f| %>
+              <center>
+                <%=image_tag("default.png", height: 100, width: 100, class: 'img-circle img-responsive') %>
+              </center>
+              <br>
+              <%= f.input :email, placeholder: "Email", input_html:{class: "form-control input-lg"}, label: false, autofocus: true %>
+              <%= f.input :password, placeholder: "Password",  input_html:{class: "form-control input-lg"}, label: false %>
+              <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+              <hr>
+              <%= f.submit "Sign in", class: "btn btn-success btn-block btn-lg btn-flat" %>
+              <br>
+              <%= link_to "Monitor Mode", monitoring_index_path, class: 'btn btn-info btn-block btn-flat' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+
+<% if params[:rfid_uid].present? %>
+  <meta http-equiv="refresh" content="<%= @config.display_duration %>;url=<%= monitoring_index_path %>" />
+<% end %>
+<div class="send-to-back">
+	<%=form_tag monitoring_index_path, autocomplete: 'off', method: :get do %>
+	  <div class="input-group stylish-input-group">
+	    <%= number_field_tag "rfid_uid", "", class: 'unseen form-control', autofocus: true, autocomplete: 'off' %>
+	    <span class="input-group-btn">
+	      <%= button_tag(type: 'submit', name: nil, class: "unseen btn btn-flat") do %>
+	        <i class="fa fa-search"></i>
+	      <% end %>
+	    </span>
+	  </div>
+	<% end %>
+</div>
+
+<div class="row">
+  <br>
+  <div class="col-md-5">
+    <% if @rfid_uid.blank? %>
+      <%=image_tag("unknown-user.gif", class: "img-rounded img-responsive img-monitoring") %>
+    <% else %>
+      <% if @employee.avatar.attached? %> 
+        <%= image_tag @employee.avatar, class: "img-rounded img-responsive img-monitoring"%>
+      <% else %>
+        <%=image_tag("default.png", class: "img-rounded img-responsive img-monitoring", ) %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="col-md-7">
+    <div class="card" style="min-height: 545px">
+      <div class="card-body">
+        <% if @rfid_uid.present? %>
+          <% if @employee.logged_in?(Time.now) %>
+            <%# if @employee.cannot_log_out? %>
+              <%#= render 'monitoring/shared/already_logged_in', employee: @employee %>
+            <%# else %>
+              <%= render 'monitoring/shared/login_status', employee: @employee %>
+              <hr>
+              <%= render 'monitoring/shared/employee_details', employee: @employee %>
+            <%# end %>
+          <% else %>
+            <%= render 'monitoring/shared/login_status', employee: @employee %>
+          <% end %>
+        <% else %>
+          <% if params[:rfid_uid].blank? %>
+            <h1 class="mb-0 text-center">Standby Mode</h1>
+            <h4 class="text-center"> Scan ID Card.</h4>
+          <% else %>
+            <h1 class="text-danger mb-0 text-center">Identification Failed!</h1>
+            <h4 class="text-danger text-center">Invalid ID Card.</h4>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="card-body">
+        <h1 class="text-center mb-0" id="time" style="text-transform: uppercase; font-size: 100px;"></h1>
+        <h1 class="text-center" style="font-size: 50px"><%= Time.now.strftime("%a, %B %e, %Y") %></h1>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $().ready(function() {
+  	$(window).on("load", function() {
+	    $("#rfid_uid").val("");
+      $("#rfid_uid").focus();
+	  });
+	});
+</script>
+<script type="text/javascript">
+  $("#rfid_uid").on("blur", function (evt) {
+    $("#rfid_uid").focus();
+  });
+</script>
+<script type="text/javascript">
+  function realtime() {
+  
+    setInterval(() => {
+      time = moment().format('hh:mm a');
+      document.getElementById('time').innerHTML = time;
+    }, 1000)
+  }
+
+  realtime();
+</script>
+
+<!-- <script type="text/javascript">
+  var FingerprintSdkTest = (function () {
+    function FingerprintSdkTest() {
+      this.sdk = new Fingerprint.WebApi;
+    }
+    FingerprintSdkTest.prototype.getDeviceList = function () {
+      return this.sdk.enumerateDevices();
+    };
+    FingerprintSdkTest.prototype.getDeviceInfoWithID = function (uid) {
+      var _instance = this;
+      return this.sdk.getDeviceInfo(uid);
+    };
+    return FingerprintSdkTest;
+  })();
+
+  window.onload = function () {
+    test = new FingerprintSdkTest();
+    var allReaders = test.getDeviceList();
+    alert(test.getDeviceInfoWithID(uid));
+    allReaders.then(function (sucessObj) {
+      for (i=0;i<sucessObj.length;i++){
+        printDeviceInfo(sucessObj[i]);
+      }
+    }, function (error){
+      console.log(error.message);
+    });
+  }
+
+  function printDeviceInfo(uid){
+   var myDeviceVal = test.getDeviceInfoWithID(uid);
+   myDeviceVal.then(function (sucessObj) {
+     //A string containing the unique identifier of the fingerprint reader.
+     console.log(sucessObj.DeviceID); 
+     // One of the DeviceUidType enumeration values that specifies the type of 
+     // the unique identifier of the fingerprint reader.
+     console.log(Fingerprint.DeviceTechnology[sucessObj.eDeviceTech]); 
+     // One of the DeviceModality enumeration values that specifies the capture 
+     // process used by the fingerprint reader.
+     console.log(Fingerprint.DeviceModality[sucessObj.eDeviceModality]); 
+     // One of the DeviceTechnology enumeration values that specifies the fingerprint reader technology.
+     console.log(Fingerprint.DeviceUidType[sucessObj.eUidType]); s
+   }, function (error){
+     console.log(error.message);
+   });
+  }
+</script> -->

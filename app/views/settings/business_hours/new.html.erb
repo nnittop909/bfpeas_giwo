@@ -1,0 +1,62 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title card-title" id="mainModalLabel">
+        Configure Business Hours Period
+      </h4>
+      <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    </div>
+    <hr class="no-margin">
+    <%= simple_form_for @business_hours, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: settings_business_hours_path do |f| %>
+      <div class="modal-body">
+        <%= f.input :employee_role, label: false, collection: BusinessHour.employee_roles.keys.to_a.map{|r| [r.titleize, r]}, as: :radio_buttons, checked: BusinessHour.employee_roles.keys.first %>
+        <h6>AM</h6>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="bootstrap-timepicker timepicker">
+              <%= f.input :am_starts_at, label: "Starts at", input_html: {id: "startTimeAm"}, as: :string %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="bootstrap-timepicker timepicker">
+              <%= f.input :am_ends_at, label: "Ends at", input_html: {id: "endTimeAm"}, as: :string %>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <h6>PM</h6>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="bootstrap-timepicker timepicker">
+              <%= f.input :pm_starts_at, label: "Starts at", input_html: {id: "startTimePm"}, as: :string %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="bootstrap-timepicker timepicker">
+              <%= f.input :pm_ends_at, label: "Ends at", input_html: {id: "endTimePm"}, as: :string %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <%= f.submit "Save", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+  $('.modal').on('shown.bs.modal', function () {
+    $('#startTimeAm').timepicker({
+      defaultTime: false
+    });
+    $('#endTimeAm').timepicker({
+      defaultTime: false
+    });
+    $('#startTimePm').timepicker({
+      defaultTime: false
+    });
+    $('#endTimePm').timepicker({
+      defaultTime: false
+    });
+  });
+</script>

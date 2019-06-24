@@ -1,0 +1,158 @@
+<div class="col-md-9">
+	<div class="card card-danger">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card-title">Personal Details</div>
+				</div>
+				<div class="col-md-4">
+					<%= link_to "Update", edit_employee_path(@employee), class: "btn btn-outline-danger", data: {modal: true} %>
+				</div>
+			</div>
+		</div>
+		<hr class="no-margin">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card-title">License and Insurance Details</div>
+				</div>
+				<div class="col-md-4">
+					<% if @employee.license_and_insurance.present? %>
+						<%= link_to "Update", edit_employee_license_and_insurance_path(employee_id: @employee.id, id: @employee.id), class: "btn btn-outline-danger", data: {modal: true} %>
+					<% else %>
+						<%= link_to "Update", new_employee_license_and_insurance_path(@employee), class: "btn btn-outline-danger", data: {modal: true} %>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<hr class="no-margin">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card-title">Emergency Contact Details</div>
+				</div>
+				<div class="col-md-4">
+					<% if @employee.emergency_contact.present? %>
+						<%= link_to "Update", edit_employee_emergency_contact_path(employee_id: @employee.id, id: @employee.emergency_contact.id), class: "btn btn-outline-danger", data: {modal: true} %>
+					<% else %>
+						<%= link_to "Update", new_employee_emergency_contact_path(@employee), class: "btn btn-outline-danger", data: {modal: true} %>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<hr class="no-margin">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card-title">Contact Details</div>
+					<div class="row">
+						<div class="col-md-10 offset-md-1">
+							<table class="table">
+								<% @employee.contacts.order(default: :desc).each do |contact| %>
+									<tr>
+										<td class="min-padding" style="width:300px"><%= contact.number %></td>
+										<td class="min-padding"><span class="text-muted"><%= contact.default? ? "Current" : '' %></span></td>
+									</tr>
+								<% end %>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+				<%= link_to "Update", new_employee_contact_path(@employee), class: "btn btn-outline-danger", data: {modal: true} %>
+				</div>
+			</div>
+		</div>
+		<hr class="no-margin">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card-title">Address Details</div>
+					<div class="row">
+						<div class="col-md-10 offset-md-1">
+							<table class="table">
+								<% @employee.addresses.each do |address| %>
+									<tr>
+										<td class="min-padding" style="width:300px"><%= address.full_details %></td>
+										<td class="min-padding"><span class="text-muted"><%= address.default? ? "Current" : '' %></span></td>
+									</tr>
+								<% end %>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+				<%= link_to "Update", new_employee_address_path(@employee), class: "btn btn-outline-danger", data: {modal: true} %>
+				</div>
+			</div>
+		</div>
+		<hr class="no-margin">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card-title">ID Cards</div>
+					<div class="row">
+						<div class="col-md-10 offset-md-1">
+							<table class="table">
+								<% @employee.id_cards.each do |card| %>
+									<tr>
+										<td class="min-padding" style="width:300px"><%= card.id_number %> | <%= card.rfid_uid %></td>
+										<td class="min-padding"><span class="text-muted"><%= card.default? ? "Current" : '' %></span></td>
+									</tr>
+								<% end if @employee.id_cards.present? %>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+				<%= link_to "Update", new_employee_id_card_path(@employee), class: "btn btn-outline-danger", data: {modal: true} %>
+				</div>
+			</div>
+		</div>
+		<hr class="no-margin">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card-title">Position Titles</div>
+						<div class="row">
+							<div class="col-md-10 offset-md-1">
+								<table class="table">
+									<% @employee.position_titles.each do |title| %>
+										<tr>
+											<td class="min-padding" style="width:300px"><%= title.name %></td>
+											<td class="min-padding"><span class="text-muted"><%= title.default? ? "Current" : '' %></span></td>
+										</tr>
+									<% end %>
+								</table>
+							</div>
+						</div>
+				</div>
+				<div class="col-md-4">
+				<%= link_to "Update", new_employee_position_title_path(@employee), class: "btn btn-outline-danger", data: {modal: true} %>
+				</div>
+			</div>
+		</div>
+		<% if @employee.security_personel? %>
+			<hr class="no-margin">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-8">
+						<div class="card-title">Schedules <span class="text-danger">(For Security Personel)</span></div>
+							<div class="row">
+								<div class="col-md-10 offset-md-1">
+									<table class="table">
+										<tr>
+											<td class="min-padding" style="width:300px"><%= @employee.schedule.present? ? @employee.schedule.name : "None" %></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+					</div>
+					<div class="col-md-4">
+					<%= link_to "Update", edit_employee_schedule_path(id: @employee.id, employee_id: @employee.id), class: "btn btn-outline-danger", data: {modal: true} %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>

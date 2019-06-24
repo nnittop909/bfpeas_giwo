@@ -1,0 +1,158 @@
+<div class="col-md-9">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-3">
+					<h6 class="text-muted mb-0"> MONTH OF</h6>
+					<h5 class="mb-0"><%= @date.strftime("%B, %Y") %></h5>
+				</div>
+				<div class="col-md-3">
+					<h6 class="text-muted mb-0">HOLIDAYS</h6>
+					<h5 class="mb-0"><%= HolidaysPlucker.new(@date).count! %></h5>
+				</div>
+				<div class="col-md-3">
+					<h6 class="text-muted mb-0">REGULAR DAYS</h6>
+					<h5 class="mb-0"><%= RegularDays.new(@date).count! %></h5>
+				</div>
+				<div class="col-md-3">
+					<h6 class="text-muted mb-0">SATURDAYS</h6>
+					<h5 class="mb-0"><%= SaturdaysPlucker.new(@date).count! %></h5>
+				</div>
+			</div>
+		</div>
+		<hr class="no-margin">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-4">
+					<h5 class="mb-0 text-center"><%= @employee.dtr_monthly_total(@date).worked_in_words %></h5>
+					<h6 class="text-muted mb-0 text-center">WORKED</h6>
+				</div>
+				<div class="col-md-4">
+					<h5 class="mb-0 text-center"><%= @employee.dtr_monthly_total(@date).undertime_in_words %></h5>
+					<h6 class="text-muted mb-0 text-center">UNDERTIME</h6>
+				</div>
+				<div class="col-md-4">
+					<h5 class="mb-0 text-center"><%= @employee.dtr_monthly_total(@date).overtime_in_words %></h5>
+					<h6 class="text-muted mb-0 text-center">OVERTIME</h6>
+				</div>
+			</div>
+		</div>
+		<hr class="no-margin">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-6">
+					<%= form_tag({:action => "index", controller: "/employees/time_records"}, {:method => :get, :class => 'form-inline', id: "date-filter-form"})  do %>
+			      <%= text_field_tag :date, @date.strftime("%B, %Y"), :class => 'form-control border-input monthpicker', :id => "date-filter", :placeholder => "Select any day of the target month." %>
+			      <div class="spinner" style="display: none;"> Generating...</div>
+			    <% end %>
+			    <small class="text-muted">Select any day of the target month.</small>
+				</div>
+				<div class="col-md-6">
+					<%= link_to 'Print DTR (PDF)', employee_time_records_path(format: "pdf", employee_id: @employee.id, date: @date, signatory: @signatory), class: "btn btn-default float-right" %>
+				</div>
+			</div>
+			<br>
+			<table class="table table-bordered">
+				<thead>
+					<tr class="bg-light">
+						<th class="td-min-padding" rowspan="2">Days</th>
+						<th colspan="2" class="text-center td-min-padding">AM</th>
+						<th colspan="2" class="text-center td-min-padding">PM</th>
+						<th colspan="2" class="text-center td-min-padding">Under Time</th>
+						<th colspan="2" class="text-center td-min-padding">Over Time</th>
+						<th colspan="2" class="text-center td-min-padding">Worked</th>
+					</tr>
+					<tr class="bg-light">
+						<th class="text-center td-min-padding" style="width: 120px;">In</th>
+						<th class="text-center td-min-padding" style="width: 120px;">Out</th>
+						<th class="text-center td-min-padding" style="width: 120px;">In</th>
+						<th class="text-center td-min-padding" style="width: 120px;">Out</th>
+						<th class="text-center td-min-padding" style="width: 120px;">Hours</th>
+						<th class="text-center td-min-padding" style="width: 120px;">Minutes</th>
+						<th class="text-center td-min-padding" style="width: 120px;">Hours</th>
+						<th class="text-center td-min-padding" style="width: 120px;">Minutes</th>
+						<th class="text-center td-min-padding" style="width: 120px;">Hours</th>
+						<th class="text-center td-min-padding" style="width: 120px;">Minutes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% Time.days_in_month(@date.month, @date.year).times.each do |day| %>
+						<% date = Date.new(@date.year, @date.month, (day + 1)) %>
+						<% daily_time_records = @employee.daily_time_records(date) %>
+
+						<tr class="<%= 'bg-light' if non_working_days(@date).include?(day + 1)%> <%= 'bg-light' if saturdays(@date).include?(day + 1) %> text-right">
+							<td class="td-min-padding">
+								<%= link_to employee_log_details_path(date: date, employee_id: @employee.id), data: {toggle: "tooltip", modal: true}, title: "View Log Details" do %>
+									<%= day + 1 %>
+								<% end %>
+							</td>
+							<!-- AM Login -->
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= link_to date <= Date.today ? new_employee_time_record_path(employee_id: @employee.id, date: date, log_type: "in", meridian: "AM", logged_time: @employee.dtr_am_in(date).present? ? @employee.dtr_am_in(date).logged_at : nil) : "", data: {toggle: "tooltip", modal: true}, title: date <= Date.today ? "Click to Set Time" : "Cannot Set Time in Advance" do %>
+									<% @employee.dtr_am_in(date).present? ? @employee.dtr_am_in(date).logged_at.strftime('%I:%M') : "-" %>
+								<% end unless non_working_days(@date).include?(day + 1) %>
+							</td>
+
+							<!-- AM Logout -->
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= link_to date <= Date.today ? new_employee_time_record_path(employee_id: @employee.id, date: date, log_type: "out", meridian: "AM", logged_time: @employee.dtr_am_out(date).present? ? @employee.dtr_am_out(date).logged_at : nil) : "", data: {toggle: "tooltip", modal: true}, title: date <= Date.today ? "Click to Set Time" : "Cannot Set Time in Advance" do %>
+									<% @employee.dtr_am_out(date).present? ? @employee.dtr_am_out(date).logged_at.strftime('%I:%M') : "-" %>
+								<% end unless non_working_days(@date).include?(day + 1) %>
+							</td>
+
+							<!-- PM Login -->
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= link_to date <= Date.today ? new_employee_time_record_path(employee_id: @employee.id, date: date, log_type: "in", meridian: "PM", logged_time: @employee.dtr_pm_in(date).present? ? @employee.dtr_pm_in(date).logged_at : nil) : "", data: {toggle: "tooltip", modal: true}, title: date <= Date.today ? "Click to Set Time" : "Cannot Set Time in Advance" do %>
+									<% @employee.dtr_pm_in(date).present? ? @employee.dtr_pm_in(date).logged_at.strftime('%I:%M') : "-" %>
+								<% end unless non_working_days(@date).include?(day + 1) %>
+							</td>
+
+							<!-- PM Logout -->
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= link_to date <= Date.today ? new_employee_time_record_path(employee_id: @employee.id, date: date, log_type: "out", meridian: "PM", logged_time: @employee.dtr_pm_out(date).present? ? @employee.dtr_pm_out(date).logged_at : nil) : "", data: {toggle: "tooltip", modal: true}, title: date <= Date.today ? "Click to Set Time" : "Cannot Set Time in Advance" do %>
+									<% @employee.dtr_pm_out(date).present? ? @employee.dtr_pm_out(date).logged_at.strftime('%I:%M') : "-" %>
+								<% end unless non_working_days(@date).include?(day + 1) %>
+							</td>
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= @employee.dtr_daily_total(date).get_undertime_hours.to_i.zero? ? "-" : @employee.dtr_daily_total(date).get_undertime_hours %>
+							</td>
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= @employee.dtr_daily_total(date).get_undertime_minutes.to_i.zero? ? "-" : @employee.dtr_daily_total(date).get_undertime_minutes %>
+							</td>
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= @employee.dtr_daily_total(date).get_overtime_hours.to_i.zero? ? "-" : @employee.dtr_daily_total(date).get_overtime_hours %>
+							</td>
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= @employee.dtr_daily_total(date).get_overtime_minutes.to_i.zero? ? "-" : @employee.dtr_daily_total(date).get_overtime_minutes %>
+							</td>
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= @employee.dtr_daily_total(date).get_worked_hours.to_i.zero? ? "-" : @employee.dtr_daily_total(date).get_worked_hours %>
+							</td>
+							<td class="text-center td-min-padding" style="width: 120px;">
+								<%= @employee.dtr_daily_total(date).get_worked_minutes.to_i.zero? ? "-" : @employee.dtr_daily_total(date).get_worked_minutes %>
+							</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</h4>
+<script type="text/javascript">
+	$( document ).on('turbolinks:load', function() {
+	  $('.monthpicker').datepicker({
+	    format: "MM, yyyy",
+	    orientation: "auto bottom",
+	    todayHighlight: 'true',
+	    autoclose: 'true'
+	  });
+	});
+</script>
+
+<script type="text/javascript">
+	$( document ).on('turbolinks:load', function() {
+	  $('#date-filter').change(function(e) {
+	    $('#date-filter-form').submit();
+	  });
+	});
+</script>

@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+        <div class="profile-wrapper">
+          <center>
+            <% if @employee.avatar.attached? %>
+              <%= image_tag @employee.avatar, height: 200, width: 200, class: 'img-square img-rounded center-block image'%>
+            <% else %>
+              <%=image_tag("default.png", height: 200, width: 200, :class=>"img-square -img-rounded center-block image") %>
+            <% end %>
+          </center>
+          <% if current_employee.admin? %>
+            <%= simple_form_for @employee, url: employee_avatar_path(employee_id: @employee.id, id: @employee.id), html: {id: "employee_avatar_form_#{@employee.id}"} do |f| %>
+              <%= f.input :avatar, as: :file, label: false, input_html: { class: 'choose-btn center-block', id: "avatar_#{@employee.id}" } %>
+              <div class="overlay option-overlay" style="background-color: rgba(0,0,0,0.3)">
+                <div class="col-xs-12 text-center">
+                  <a href="" title="Update Photo" class="text-white" id="browse-avatar-<%=@employee.id%>"><span class="fa fa-upload"> </span> Update Photo</a>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="name-wrapper">
+          <h5 class="mb-0 text-center card-title"><%=@employee.full_name.try(:upcase) %>
+          </h5>
+          <h6 class="mb-0 text-center">
+            <%= @employee.designation %>
+          </h6>
+          <% if @employee.time_logs.present? %>
+            <center>
+              <h5 class="mb-0 badge bg-info">
+                <%= @employee.log_status(Time.now).titleize %>
+              </h5>
+            </center>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body">
+        <nav class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <%= link_to 'Details', employee_path(@employee), class: "nav-link #{'active' if current_page?(employee_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'DTR', employee_time_records_path(employee_id: @employee.id), class: "nav-link #{'active' if current_page?(employee_time_records_path(employee_id: @employee.id))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Settings', employee_settings_path(employee_id: @employee.id), class: "nav-link #{'active' if current_page?(employee_settings_path(employee_id: @employee.id))}" %>
+          </li>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <% if current_page?(employee_path(@employee)) %>
+    <%=render 'employees/partials/details' %>
+  <% end %>
+  <% if current_page?(employee_time_records_path(employee_id: @employee.id)) %>
+    <%=render 'employees/partials/time_records' %>
+  <% end %>
+  <% if current_page?(employee_settings_path(employee_id: @employee.id)) %>
+    <%= render 'employees/partials/settings' %>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  var browse_id = "#browse-avatar-<%=@employee.id%>";
+  var avatar_id = "#avatar_<%=@employee.id%>";
+  var avatar_form = "#employee_avatar_form_<%=@employee.id%>";
+  $(browse_id).click(function(e) {
+    $(avatar_id).click();
+    e.preventDefault();
+    e.stopPropagation();
+    $(avatar_id).change(function() {
+      var val = $(avatar_id).val();
+      if (val != ''){
+        $(avatar_form).submit();
+      }
+    });
+  });
+</script>

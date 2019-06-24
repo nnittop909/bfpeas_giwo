@@ -1,0 +1,22 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+		<div class="modal-header">
+		  <h4 class="modal-title card-title" id="mainModalLabel">
+		    Identification Card Details
+		  </h4>
+		  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		</div>
+		<hr class="no-margin">
+		<%= simple_form_for @id_card, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: employee_id_cards_path do |f| %>
+		  <div class="modal-body">
+		    <%= f.error_notification %>
+		    <%= f.input :id_number %>
+		    <%= f.input :rfid_uid, label: "RFID UID", hint: 'Scan Identification Card' %>
+		    <%= f.input :default, as: :boolean, input_html: { :checked => true } %>
+		  </div>
+		  <div class="modal-footer">
+		    <%= f.submit "Save", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+		  </div>
+		<% end %>
+	</div>
+</div>

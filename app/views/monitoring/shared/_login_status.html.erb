@@ -1,0 +1,10 @@
+<h1 class="mb-0 text-success text-center">
+  <%= "You've been #{employee.log_status(Time.now).titleize.downcase}!" %>
+</h1>
+<h4 class="text-center">
+	<% if employee.logged_in?(Time.now) %>
+  	<%= "Please wait for 30 seconds to log-out." %>
+  <% else %>
+  	<%= "Please wait for 30 seconds to log-in." %>
+  <% end %>
+</h4>

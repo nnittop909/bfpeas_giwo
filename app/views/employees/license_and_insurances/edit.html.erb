@@ -1,0 +1,25 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+		<div class="modal-header">
+		  <h4 class="modal-title card-title" id="mainModalLabel">
+		    License and Insurance Details
+		  </h4>
+		  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		</div>
+		<hr class="no-margin">
+		<%= simple_form_for @license_and_insurance, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: employee_license_and_insurance_path do |f| %>
+		  <div class="modal-body">
+		    <%= f.error_notification %>
+		    <%= f.input :employee_id, input_html: {value: @employee.id}, as: :hidden %>
+		    <%= f.input :prc_license_number, label: "PRC License Number" %>
+		    <%= f.input :pagibig_number, label: "PAGIBIG Number" %>
+		    <%= f.input :sss_number, label: "SSS Number" %>
+		    <%= f.input :phil_health_number, label: "Phil Health Number" %>
+		    <%= f.input :tin_number, label: "TIN Number" %>
+		  </div>
+		  <div class="modal-footer">
+		    <%= f.submit "Save", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+		  </div>
+		<% end %>
+	</div>
+</div>
