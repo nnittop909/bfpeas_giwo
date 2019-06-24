@@ -4,7 +4,7 @@ require 'mina/git'
 require 'mina/rbenv'
 require 'mina/deploy'
 
-set :domain, '192.168.254.104'
+set :domain, '192.168.43.202'
 set :deploy_to, '/var/www/bfpeas_giwo'
 set :repository, "git@github.com:nnittop909/bfpeas_giwo.git"
 set :branch, 'master'

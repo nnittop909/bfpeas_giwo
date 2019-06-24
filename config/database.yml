@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: rfid_dtr_production
-  username: rfid_dtr
-  password: <%= ENV['RFID_DTR_DATABASE_PASSWORD'] %>
+  database: bfpeas_giwo_production
+  username: deploy
+  password: <%= ENV['BFPEAS_GIWO_DATABASE_PASSWORD'] %>

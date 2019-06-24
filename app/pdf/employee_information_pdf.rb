@@ -9,11 +9,11 @@ class EmployeeInformationPdf < Prawn::Document
   end
 
   def header
-  	bounding_box [0, 786], width: 161 do
+  	bounding_box [0, 786], width: 161, height: 110 do
       # stroke_bounds
-      image "#{Rails.root}/app/assets/images/ia_logo.png", width: 70, height: 70, position: :right
+      image "#{Rails.root}/app/assets/images/ia_logo.png", width: 60, height: 60, position: :right
     end
-    bounding_box [161, 786], width: 240 do
+    bounding_box [161, 786], width: 240, height: 110 do
       # stroke_bounds
       font("#{Rails.root}/app/assets/fonts/Invitation-Regular.ttf") do
       	text "United Church of Christ in the Philippines", size: 14, align: :center
@@ -31,9 +31,9 @@ class EmployeeInformationPdf < Prawn::Document
       text "<i>Association of Christian Schools Colleges and Universities</i>", size: 9, align: :center, inline_format: true
 
     end
-    bounding_box [401, 786], width: 161 do
+    bounding_box [401, 786], width: 161, height: 110 do
       # stroke_bounds
-      # image "#{Rails.root}/app/assets/images/church_logo.jpg", width: 70, height: 70
+      image "#{Rails.root}/app/assets/images/uccp_logo.png", width: 60, height: 60
     end
     move_down 10
     text "EMPLOYEE BASIC INFORMATION SHEET", style: :bold, size: 17, align: :center

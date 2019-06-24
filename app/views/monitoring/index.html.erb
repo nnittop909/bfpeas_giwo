@@ -46,10 +46,10 @@
         <% else %>
           <% if params[:rfid_uid].blank? %>
             <h1 class="mb-0 text-center">Standby Mode</h1>
-            <h4 class="text-center"> Scan ID Card.</h4>
+            <h4 class="text-center">Fingerprint scanner ready.</h4>
           <% else %>
             <h1 class="text-danger mb-0 text-center">Identification Failed!</h1>
-            <h4 class="text-danger text-center">Invalid ID Card.</h4>
+            <h4 class="text-danger text-center">Try again.</h4>
           <% end %>
         <% end %>
       </div>
