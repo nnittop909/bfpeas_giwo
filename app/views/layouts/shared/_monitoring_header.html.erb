@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-fixed-top navbar-dark mb-3" style="background-color: #021b35;">
   <%= link_to monitoring_index_path, class: 'navbar-brand' do %>
     <span class="d-inline-block align-top"><i class="fa fa-desktop"> </i></span>
-    &nbspRFID-AMM v.1.9.0
+    &nbsp Employee Attendance System
   <% end %>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -18,7 +18,7 @@
             <span><i class="fa fa-home"></i></span>
           <% end %>
         <% else %>
-          <%= link_to new_employee_session_path, class: 'nav-link', title: 'Admin Sign-in' do %>
+          <%= link_to new_employee_session_path, class: 'nav-link', title: 'Account Sign-in' do %>
             <span><i class="fa fa-sign-in-alt"></i></span>
           <% end %>
         <% end %>

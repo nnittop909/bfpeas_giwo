@@ -142,6 +142,10 @@ class Employee < ApplicationRecord
     where.not(role: "admin")
   end
 
+  def not_admin?
+    role != "admin"
+  end
+
   def absent?(date)
     am_absent?(date) && pm_absent?(date)
   end

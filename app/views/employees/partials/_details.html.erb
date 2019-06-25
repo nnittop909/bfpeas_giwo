@@ -2,7 +2,7 @@
 <div class="col-md-9">
   <div class="card">
     <div class="card-header">
-      <%= link_to "Print Info (PDF)", reports_employee_informations_path(format: "pdf", employee_id: @employee.id), class: "btn btn-default float-right" %>
+      <%= link_to "Print Info (PDF)", reports_employee_informations_path(format: "pdf", employee_id: @employee.id), class: "btn btn-default float-right" if @employee.not_admin? %>
     </div>
     <div class="card-body">
       <h4>Employee Details</h4>
@@ -25,11 +25,11 @@
               <td style="width:140px">Birth Date: </td>
               <td class="text-bold"><b><%=@employee.try(:birthdate).try(:strftime, "%B %e, %Y") || "N/A" %></b></td>
               <td style="width:140px">Age: </td>
-              <td class="text-bold"><b><%=@employee.age %></b></td>
+              <td class="text-bold"><b><%=@employee.age%></b></td>
             </tr>
             <tr>
               <td style="width:140px">Marital Status: </td>
-              <td colspan="3" class="text-bold"><b><%=@employee.marital_status.titleize %></b></td>
+              <td colspan="3" class="text-bold"><b><%=@employee.try(:marital_status).try(:titleize) %></b></td>
             </tr>
             <% if @employee.married? %>
               <tr>
