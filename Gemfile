@@ -7,7 +7,7 @@ end
 
 gem 'rails', '5.2.2.1'
 gem 'pg', '0.21'
-gem 'puma', '~> 3.7', group: [:development, :production]
+gem 'puma', '~> 5.6', group: [:development, :production]
 gem 'sass-rails'
 gem 'uglifier'
 gem 'coffee-rails'
